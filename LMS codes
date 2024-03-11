@@ -1,0 +1,221 @@
+-- Creating the database LMS
+CREATE DATABASE IF NOT EXISTS LMS;
+
+-- Choosing the LMS database
+USE LMS;
+
+--1. Creating Table Authors
+CREATE TABLE Authors (
+    author_id INT PRIMARY KEY AUTO_INCREMENT,
+    author_name VARCHAR(100) NOT NULL,
+    nationality VARCHAR(100) NOT NULL
+);
+
+-- 2.Creating Table Books
+CREATE TABLE Books (
+    book_id INT PRIMARY KEY AUTO_INCREMENT,
+    book_title VARCHAR(255) NOT NULL,
+    author_id INT NOT NULL,
+    genre VARCHAR(100) NOT NULL,
+    publication_year INT NOT NULL,
+    FOREIGN KEY (author_id) REFERENCES Authors(author_id)
+);
+
+-- 3.Creating Table Members
+CREATE TABLE Members (
+    member_id INT PRIMARY KEY AUTO_INCREMENT,
+    member_name VARCHAR(100) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL
+);
+
+--4. Creating Table Books_Genres 
+CREATE TABLE Books_Genres (
+    book_id INT NOT NULL,
+    genre_id INT NOT NULL,
+    PRIMARY KEY (book_id, genre_id),
+    FOREIGN KEY (book_id) REFERENCES Books(book_id),
+    FOREIGN KEY (genre_id) REFERENCES Genres(genre_id)
+);
+
+--5. Create Tabling  Members_Books
+CREATE TABLE Members_Books (
+    borrow_id INT PRIMARY KEY AUTO_INCREMENT,
+    member_id INT NOT NULL,
+    book_id INT NOT NULL,
+    borrow_date DATE NOT NULL,
+    return_date DATE NOT NULL,
+    FOREIGN KEY (member_id) REFERENCES Members(member_id),
+    FOREIGN KEY (book_id) REFERENCES Books(book_id)
+);
+
+--6. Creating Table Genres
+CREATE TABLE Genres (
+    genre_id INT PRIMARY KEY AUTO_INCREMENT,
+    genre_name VARCHAR(100) NOT NULL
+);
+
+-- 7.Creating Table Publishers
+CREATE TABLE Publishers (
+    publisher_id INT PRIMARY KEY AUTO_INCREMENT,
+    publisher_name VARCHAR(255) NOT NULL
+);
+
+--8. Creating Table Books_Publishers
+CREATE TABLE Books_Publishers (
+    book_id INT NOT NULL,
+    publisher_id INT NOT NULL,
+    FOREIGN KEY (book_id) REFERENCES Books(book_id),
+    FOREIGN KEY (publisher_id) REFERENCES Publishers(publisher_id)
+);
+
+--9. Creating Table Librarians
+CREATE TABLE Librarians (
+    librarian_id INT PRIMARY KEY AUTO_INCREMENT,
+    librarian_name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL
+);
+
+--10. Creating Table Book_Authors
+CREATE TABLE Book_Authors (
+    book_id INT NOT NULL,
+    author_id INT NOT NULL,
+    PRIMARY KEY (book_id, author_id),
+    FOREIGN KEY (book_id) REFERENCES Books(book_id),
+    FOREIGN KEY (author_id) REFERENCES Authors(author_id)
+);
+
+
+
+
+
+
+--1. Inserting 10 records into Table Authors
+INSERT INTO Authors (author_name, nationality) VALUES
+('J.K. Rowling', 'British'),
+('George Orwell', 'British'),
+('Agatha Christie', 'British'),
+('Haruki Murakami', 'Japanese'),
+('Jane Austen', 'British'),
+('Stephen King', 'American'),
+('Leo Tolstoy', 'Russian'),
+('Mark Twain', 'American'),
+('Emily Bronte', 'British'),
+('Fyodor Dostoevsky', 'Russian');
+
+--2. Inserting 10 records into Table Books
+INSERT INTO Books (book_title, author_id, genre, publication_year) VALUES
+('Harry Potter', 1, 'Fantasy', 1997),
+('1984', 2, 'Dystopian', 1949),
+('Murder on the Orient Express', 3, 'Mystery', 1934),
+('Norwegian Wood', 4, 'Fiction', 1987),
+('Pride and Prejudice', 5, 'Romance', 1813),
+('The Shining', 6, 'Horror', 1977),
+('War and Peace', 7, 'Historical Fiction', 1869),
+('The Adventures of Huckleberry Finn', 8, 'Adventure', 1884),
+('Wuthering Heights', 9, 'Gothic Fiction', 1847),
+('Crime and Punishment', 10, 'Psychological Fiction', 1866);
+
+--3. Inserting 10 records into Table Members
+INSERT INTO Members (member_name, address, email) VALUES
+('John Doe', '123 Main St.', 'john@gmail.com'),
+('Jane Smith', '456 Elm St.', 'jane@gmail.com'),
+('David Lee', '789 Oak St.', 'david@gmail.com'),
+('Emily White', '101 Pine St.', 'emily@gmail.com'),
+('Michael Brown', '202 Cedar St.', 'michael@gmail.com'),
+('Sarah Johnson', '345 Maple St.', 'sarah@gmail.com'),
+('James Wilson', '567 Pineapple St.', 'james@gmail.com'),
+('Linda Miller', '890 Orange St.', 'linda@gmail.com'),
+('Robert Taylor', '111 Cherry St.', 'robert@gmail.com'),
+('Amanda Davis', '222 Plum St.', 'amanda@gmail.com');
+
+--4. Inserting 10 records into Table  Members_Books
+INSERT INTO Members_Books (member_id, book_id, borrow_date, return_date) VALUES
+(1, 1, '2024-01-10', '2024-01-20'),
+(2, 3, '2024-02-05', '2024-02-20'),
+(3, 2, '2024-03-01', '2024-03-15'),
+(4, 4, '2024-02-20', '2024-03-05'),
+(5, 5, '2024-03-10', '2024-03-25'),
+(6, 6, '2024-01-15', '2024-02-01'),
+(7, 7, '2024-02-10', '2024-03-10'),
+(8, 8, '2024-03-05', '2024-03-20'),
+(9, 9, '2024-01-20', '2024-02-10'),
+(10, 10, '2024-02-15', '2024-03-01');
+
+--5. Inserting 10 records into Table Genres
+INSERT INTO Genres (genre_name) VALUES
+('Fantasy'),
+('Dystopian'),
+('Mystery'),
+('Fiction'),
+('Romance'),
+('Horror'),
+('Historical Fiction'),
+('Adventure'),
+('Gothic Fiction'),
+('Psychological Fiction');
+
+--6. Inserting 10 records into Table Books_Genres
+INSERT INTO Books_Genres (book_id, genre_id) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10);
+
+--7. Inserting 10 records into Table Publishers
+INSERT INTO Publishers (publisher_name) VALUES
+('Penguin Random House'),
+('HarperCollins'),
+('Simon & Schuster'),
+('Macmillan'),
+('Hachette Livre'),
+('Oxford University Press'),
+('Cambridge University Press'),
+('Penguin Books'),
+('Random House'),
+('Vintage Books');
+
+--8. Inserting 10 records into Table Librarians
+INSERT INTO Librarians (librarian_name, email) VALUES
+('Alice Johnson', 'alice@gmail.com'),
+('Bob Smith', 'bob@gmail.com'),
+('Emma Brown', 'emma@gmail.com'),
+('Jack Wilson', 'jack@gmail.com'),
+('Olivia Davis', 'olivia@gmail.com'),
+('Daniel Clark', 'daniel@gmail.com'),
+('Sophia Martin', 'sophia@gmail.com'),
+('William White', 'william@gmail.com'),
+('Ella Harris', 'ella@gmail.com'),
+('Nathan Thompson', 'nathan@gmail.com');
+
+--9. Inserting 10 records into Table Books_Publishers
+INSERT INTO Books_Publishers (book_id, publisher_id) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10);
+
+--10. Inserting 10 records into Table Book_Authors
+INSERT INTO Book_Authors (book_id, author_id) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10);
